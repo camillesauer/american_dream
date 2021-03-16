@@ -9,12 +9,18 @@ from src.d01_data.load_data import *
 engine = sqlalchemy.create_engine("mysql+pymysql://student:PanapoiC19!@localhost/american_dream_db")
 
 #J'affiche un échantillon de mes données pour analyser la pertinence des différentes colonnes
-df = pd.read_sql('SELECT * FROM DataAnalyst', con=engine)
+# df = pd.read_sql('SELECT * FROM DataAnalyst', con=engine)
+df = pd.read_sql("DataAnalyst",con=engine)
 # print(df.columns)
 
 #J'affiche un échantillon de mes données pour analyser la pertinence des différentes colonnes
-df1 = pd.read_sql('SELECT * FROM SalarySurvey', con=engine)
+# df1 = pd.read_sql('SELECT * FROM SalarySurvey', con=engine)
+df1 = pd.read_sql("SalarySurvey",con=engine)
 # print(df1.columns)
+
+def save_to_mysql(db_connect, df_to_save, df_name):
+    df_to_save.to_sql(con=db_connect, name=df_name, if_exists='replace')
+
 
 """
 Je supprime les colonnes dont je n'ai pas besoin dans les tables
@@ -31,9 +37,17 @@ df1 = df1[['SalaryUSD','Country','PostalCode','EmploymentStatus','JobTitle','Man
           'PopulationOfLargestCityWithin20Miles','EmploymentSector', 'LookingForAnotherJob', 'CareerPlansThisYear',
           'Gender', 'OtherJobDuties']]
           
-df = df[['Job Title', 'Location', 'Company Name', 'Size', 'Revenue', 'Sector', 'Salary Estimate', 'Type of ownership']]
+df = df[['JobTitle', 'Location', 'Company Name', 'Size', 'Revenue', 'Sector', 'Salary Estimate', 'Type of ownership']]
+
+#Je renomme mes colonnes afin que ça ne crée pas de bug dans mes prochaines manipulations
+df.rename(columns={"Salary Estimate": "SalaryEstimate", "Job Description": "JobDescription", "Company Name":"CompanyName", "Easy Apply":"EasyApply", "Type of ownership": "TypeOfOwnership"})
+
 """
 
+
+#NETTOYAGE DES DONNÉES
+
+"""
 # Visualiser le nombre de valeurs nulles
 # print(df1.isnull().sum())
 # print(df1.shape)
@@ -49,3 +63,23 @@ df = df[['Job Title', 'Location', 'Company Name', 'Size', 'Revenue', 'Sector', '
 # print(df1.duplicated().value_counts())
 # il n'y a que des false il n'y a donc pas de doublons
 # s'il y avait eu doublon j'aurais utilisé un dropduplicate
+
+# Visualiser le nombre de valeurs nulles
+# print(df.isnull().sum())
+# print(df.shape)
+
+#Je regarde s'il y a des dates
+# print(df.dtypes)
+
+#Je regarde s'il y a des valeurs doubles
+# print(df.duplicated().value_counts())
+# il n'y a que des false il n'y a donc pas de doublons
+# s'il y avait eu doublon j'aurais utilisé un dropduplicate
+"""
+
+
+# #le salaire moyen, le salaire median, et représentez les dix déciles. Faites l'exercice pour les deux bases et comparez les résultats.
+# moyenne_salaire_df1 = df1.Salary Estimate.median()
+
+save_to_mysql(db_connect=engine,df_to_save=df1, df_name='SalarySurveyV1')
+save_to_mysql(db_connect=engine,df_to_save=df, df_name='DataAnalystV1')
