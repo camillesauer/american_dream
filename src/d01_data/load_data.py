@@ -30,6 +30,9 @@ salary_survey_db = pd.read_excel("/home/apprenant/PycharmProjects/american_dream
 # print(salary_survey_db.columns)
 
 # j'insère la data du fichier csv et excel dans la db sql et crée deux tables distinctes
-salary_survey_db.to_sql('SalarySurvey', engine, if_exists='replace', index=False)
-data_analyst_db.to_sql('DataAnalyst', engine, if_exists='replace', index=False)
+# salary_survey_db.to_sql('SalarySurvey', engine, if_exists='replace', index=False)
+# data_analyst_db.to_sql('DataAnalyst', engine, if_exists='replace', index=False)
 
+#j'enregistre mes dataframes dans mysql
+def save_to_mysql(db_connect, df_to_save, df_name):
+  df_to_save.to_sql(con=db_connect, name=df_name, if_exists='replace')
