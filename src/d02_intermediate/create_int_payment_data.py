@@ -82,13 +82,6 @@ print(df1.columns)
 # s'il y avait eu doublon j'aurais utilisé un dropduplicate
 
 
-
-# le salaire moyen, le salaire median, et représentez les dix déciles. Faites l'exercice pour les deux bases et comparez les résultats.
-
-#
-# moyenne_salaire_df = df.SalaryEstimate.median
-# print(moyenne_salaire_df)
-# #
 # # df=df.rename(columns={"Salary Estimate": "SalaryEstimate", "Job Description": "JobDescription", "Company Name":"CompanyName", "Easy Apply":"EasyApply", "Type of ownership": "TypeOfOwnership"})
 # # print(df.columns)
 # # print(df.shape)
